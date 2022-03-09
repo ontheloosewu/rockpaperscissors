@@ -58,5 +58,35 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-const playerSelection = "RoCk";
-console.log(playRound(playerSelection, computerPlay()));
+function game() {
+    let playerScore = 0;
+    let computerScore = 0;
+
+    //simulate 5 rounds, display result each round
+    for (let i = 0; i < 5; i++) {
+        let result = playRound(playerSelection, computerPlay());
+        console.log(result);
+
+        //keeping score
+        if (result.includes("Win")) {
+            playerScore++;
+        }
+        else if (result.includes("Lose")) {
+            computerScore++;
+        }
+    }
+
+    if (playerScore > computerScore) {
+        console.log("You win the game!");
+    }
+    else if (computerScore > playerScore) {
+        console.log("The computer wins the game!");
+    }
+    else {
+        console.log("Nobody won the game!");
+    }
+}
+
+//assumes user inputs a valid choice..
+const playerSelection = window.prompt("Input your choice:");
+game();
