@@ -62,8 +62,13 @@ function game() {
     let playerScore = 0;
     let computerScore = 0;
 
-    //simulate 5 rounds, display result each round
+    //simulate 5 rounds
     for (let i = 0; i < 5; i++) {
+        
+        //assumes user inputs a valid choice..
+        const playerSelection = window.prompt("Input your choice:");
+        
+        //display result each round
         let result = playRound(playerSelection, computerPlay());
         console.log(result);
 
@@ -87,6 +92,4 @@ function game() {
     }
 }
 
-//assumes user inputs a valid choice..
-const playerSelection = window.prompt("Input your choice:");
 game();
