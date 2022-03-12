@@ -1,5 +1,4 @@
 function computerPlay() {
-    // 3 choices
     let choice = Math.floor(Math.random() * 3);
 
     if (choice === 0) {
@@ -14,20 +13,14 @@ function computerPlay() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    //take any case sensitive input
-    playerSelection = playerSelection.toLowerCase();
-    
-    //to see what selections are
-    //console.log("Player chose: " + playerSelection);
-    //console.log("Computer chose: " + computerSelection);
-
-    // if player selected "choice", go through computer choices
     if (playerSelection === "rock") {
         if (computerSelection === "Paper") {
-            return "You Lose! Paper beats Rock";
+            computerScore++;
+            return "You Lose! Paper beats Rock.";
         }
         else if (computerSelection === "Scissors") {
-            return "You Win! Rock beats Scissors";
+            playerScore++;
+            return "You Win! Rock beats Scissors.";
         }
         else {
             return "It's a tie!";
@@ -35,22 +28,25 @@ function playRound(playerSelection, computerSelection) {
     }
     else if (playerSelection === "paper") {
         if (computerSelection === "Rock") {
-            return "You Win! Paper beats Rock";
+            playerScore++;
+            return "You Win! Paper beats Rock.";
         }
         else if (computerSelection === "Scissors") {
-            return "You Lose! Scissors beats Paper";
+            computerScore++;
+            return "You Lose! Scissors beats Paper.";
         }
         else {
             return "It's a tie!";
         }
     }
-    // player selected scissors
     else {
         if (computerSelection === "Paper") {
-            return "You Win! Scissors beats Paper";
+            playerScore++;
+            return "You Win! Scissors beats Paper.";
         }
         else if (computerSelection === "Rock") {
-            return "You Lose! Rock beats Scissors";
+            computerScore++;
+            return "You Lose! Rock beats Scissors.";
         }
         else {
             return "It's a tie!";
@@ -58,38 +54,37 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
+function updateText(resultText) {
+    runningScore.textContent = resultText + " Your score: " + playerScore +
+        " Computer score: " + computerScore;
 
-    //simulate 5 rounds
-    for (let i = 0; i < 5; i++) {
-        
-        //assumes user inputs a valid choice..
-        const playerSelection = window.prompt("Input your choice:");
-        
-        //display result each round
-        let result = playRound(playerSelection, computerPlay());
-        console.log(result);
-
-        //keeping score
-        if (result.includes("Win")) {
-            playerScore++;
-        }
-        else if (result.includes("Lose")) {
-            computerScore++;
-        }
+    if (playerScore === 5) {
+        winnerText.textContent = "You got 5 points first, you win the game!"
+        buttons.forEach((button) => {
+            button.disabled = true;
+        });
     }
-
-    if (playerScore > computerScore) {
-        console.log("You win the game!");
-    }
-    else if (computerScore > playerScore) {
-        console.log("The computer wins the game!");
-    }
-    else {
-        console.log("Nobody won the game!");
+    else if (computerScore === 5) {
+        winnerText.textContent = "The computer got 5 points first, you lose the game!"
+        buttons.forEach((button) => {
+            button.disabled = true;
+        });
     }
 }
 
-game();
+let playerScore = 0;
+let computerScore = 0;
+
+const container = document.querySelector('#container');
+const runningScore = document.createElement('div');
+const winnerText = document.createElement('div');
+container.appendChild(runningScore);
+container.appendChild(winnerText);
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        let result = playRound(button.className, computerPlay());
+        updateText(result);
+    });
+});
